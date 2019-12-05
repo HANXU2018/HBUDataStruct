@@ -1,0 +1,8 @@
+int Delete( int A[], int L, int minA, int maxA ){
+    int p=0,q=0;
+    while(q<L){
+       while(A[q]>minA&&A[q]<maxA)q++;
+       if(q<L)A[p++]=A[q++];
+    }
+    return p;  
+}

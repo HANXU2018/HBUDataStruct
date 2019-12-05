@@ -1,0 +1,109 @@
+#include <stdio.h>
+#include<stdlib.h>
+#include<string.h>
+/* 评测结果 
+时间  结果  得分  题目  编译器     用时（ms）  内存（MB）  用户
+2016-08-29 10:27    答案正确    25  5-20    gcc     2   1   569985011
+测试点结果 
+测试点     结果  得分/满分   用时（ms）  内存（MB）
+测试点1    答案正确    13/13   2   1
+测试点2    答案正确    5/5     1   1
+测试点3    答案正确    4/4     1   1
+测试点4    答案正确    2/2     1   1
+测试点5    答案正确    1/1     1   1
+查看代码*/
+/*
+对正负号的判定：如果存在连续的非数值符号，且最后一个是+-，那么可以判定该号为正负
+栈内不会出现），...*/
+void MainFum(char*,int);
+int compare(char,char);
+int IsNum(char);
+int zhengfu(char);
+int main() {
+    char a[21];//表达式不超过20个字符
+    scanf("%s",a);
+    int len=strlen(a);
+
+    MainFum(a,len);
+    return 0;
+}
+
+int IsNum(char c) {
+    return (c>='0'&&c<='9')||c=='.';
+}
+int zhengfu(char c) {
+    return c=='+'||c=='-';
+}
+
+int compare(char a,char b) {
+    if(b==')')return 1;
+    if(a=='('||b=='(')return 0;
+
+    switch(b) {
+        case '+':
+        case '-':
+            return 1;
+        case '*':
+        case '/':
+            switch(a) {
+                case '+':
+                case '-':
+                    return 0;
+                case'*':
+                case'/':
+                    return 1;
+            }
+    }
+}
+void MainFum(char*a,int lenth) {
+    static char stack[21];
+    static int flag=0;//指示栈容
+    static int i=0;//静态局部变量，用于标记当前处理到字符串的哪一个位置
+    static int space =0;
+
+    for(; i<lenth; i++) {
+        if(IsNum(a[i])) {
+            if(space) {
+                printf(" ");
+                space =0;
+            }
+            printf("%c",a[i]);
+
+        } else if(zhengfu(a[i])&&(i?!IsNum(a[i-1])&&a[i-1]!=')':1)) {
+            if(a[i]=='-') {
+                if(space) {
+                    printf(" ");
+                    space =0;
+                }
+                printf("%c",a[i]);//正号不输出
+            }
+        } else { //一般符号
+
+            if(flag) {
+                if(a[i]==')')
+                    while(flag--) {
+                        if(stack[flag]=='(')break;
+                        printf(" %c",stack[flag]);
+                    }
+                else {
+                    while(flag) {
+                        if(compare(stack[flag-1],a[i])) {
+                            printf(" %c",stack[--flag]);
+                        } else break;
+                    }
+                    stack[flag++]=a[i];
+                }
+
+            } else stack[flag++]=a[i];
+            for(int j=0; j<flag; j++)
+                if(stack[j]!='(') {
+                    space=1;
+                    break;
+                }
+        }
+    }
+    while(flag) {
+        printf(" %c",stack[--flag]);
+    }
+
+}

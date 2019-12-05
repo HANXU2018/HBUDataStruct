@@ -1,0 +1,22 @@
+<html>
+    <head>
+        
+    </head>>
+    <body>
+        <p id = 'p1'></p>
+        <script>
+            for(var i=0;i<5;i++){
+                for(var l=0;l<i;l++){
+                    var s = "&nbsp";
+                    document.getElementById("p1").innerHTML += s
+                }
+                for(var l=5;l>i;l--){
+                    var s = "<b>*</b>";
+                    document.getElementById("p1").innerHTML += s
+                }
+                var s = "</br>";
+                    document.getElementById("p1").innerHTML += s
+            }
+        </script>
+    </body>
+</html>
