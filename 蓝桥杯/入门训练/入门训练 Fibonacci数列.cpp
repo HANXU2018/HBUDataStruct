@@ -8,10 +8,9 @@ int main(){
 	int b=1;
 	int t=1;
 	if(n>2){
-		for(int i=2;i<=n;i++){
+		for(int i=3;i<=n;i++){
 			t=sum;
-			sum=(a+b)%10007;
-			a=b;
+			sum=(sum+b)%10007;
 			b=t;
 		}
 		cout<<sum%10007;
